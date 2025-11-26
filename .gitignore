@@ -1,3 +1,4 @@
 .idea
 /target
 token.txt
+.benchmark_cache.toml
