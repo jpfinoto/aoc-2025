@@ -49,6 +49,13 @@ execution time and the peak heap usage.
 Heap usage is measured on the second call to each solver, so if you have some kind of `lazy_static` that gets allocated
 on the first run it will NOT be measured! Stack usage is also not measured.
 
+## GitHub Actions
+
+The benchmark can run automatically via GitHub Actions on every push to main. To enable this:
+
+1. Add your Advent of Code session token as a repository secret named `AOC_TOKEN` (Settings > Secrets and variables > Actions > New repository secret)
+2. The workflow will automatically run benchmarks and commit the updated README.md
+
 # Day Template
 
 ```rust

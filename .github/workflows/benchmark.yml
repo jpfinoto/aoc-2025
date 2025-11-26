@@ -39,7 +39,7 @@ jobs:
         run: echo "${{ secrets.AOC_TOKEN }}" > token.txt
 
       - name: Run benchmark
-        run: cargo run bench
+        run: cargo run --release bench
 
       - name: Commit updated README
         run: |
