@@ -6,7 +6,7 @@ An overcomplicated setup for getting inputs and benchmarking the solutions!
 
 <!---BENCH_START--->
 
-Benchmark CPU: **Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz**
+Benchmark CPU: **AMD EPYC 7763 64-Core Processor**
 
 `|------------------------| 0/24 stars`
 
