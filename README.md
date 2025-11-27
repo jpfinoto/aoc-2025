@@ -6,7 +6,7 @@ An overcomplicated setup for getting inputs and benchmarking the solutions!
 
 <!---BENCH_START--->
 
-Benchmark CPU: **AMD EPYC 7763 64-Core Processor**
+Benchmark CPU: **4x Intel(R) Xeon(R) Platinum 8370C CPU @ 2.80GHz**
 
 `|------------------------| 0/24 stars`
 
