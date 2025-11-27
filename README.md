@@ -6,7 +6,7 @@ An overcomplicated setup for getting inputs and benchmarking the solutions!
 
 <!---BENCH_START--->
 
-Benchmark CPU: **4x Intel(R) Xeon(R) Platinum 8370C CPU @ 2.80GHz**
+Benchmark CPU: **4x Neoverse-N2**
 
 `|------------------------| 0/24 stars`
 
