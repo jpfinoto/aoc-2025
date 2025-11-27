@@ -4,14 +4,15 @@ mod benchmark_cache;
 pub mod inputs;
 mod readme;
 pub mod solutions;
+mod utils;
 
-use crate::aoc::{get_days_iter, Day, Part, PuzzleSource, SolverMap};
-use crate::bench::{benchmark, BenchmarkResults};
+use crate::aoc::{Day, Part, PuzzleSource, SolverMap, get_days_iter};
+use crate::bench::{BenchmarkResults, benchmark};
 use crate::benchmark_cache::{get_cached_benchmarks, save_cached_benchmarks};
 use crate::inputs::CachedOnlinePuzzleSource;
 use crate::readme::update_readme;
 use crate::solutions::get_solvers;
-use clap::{arg, command, Command};
+use clap::{Command, arg, command};
 use peak_alloc::PeakAlloc;
 use std::cell::LazyCell;
 use std::collections::HashMap;

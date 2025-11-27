@@ -1,4 +1,4 @@
-use crate::aoc::{Day, PuzzleInput, PuzzleSource, CURRENT_YEAR};
+use crate::aoc::{CURRENT_YEAR, Day, PuzzleInput, PuzzleSource};
 use directories::ProjectDirs;
 use reqwest::header::COOKIE;
 use sha2::{Digest, Sha256};

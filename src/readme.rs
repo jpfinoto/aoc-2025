@@ -1,11 +1,11 @@
-use crate::aoc::get_days_iter;
-use crate::bench::{format_duration, format_memory, BenchmarkResults};
 use crate::BenchmarkMap;
+use crate::aoc::get_days_iter;
+use crate::bench::{BenchmarkResults, format_duration, format_memory};
+use crate::utils::get_cpu_name;
 use itertools::Itertools;
 use std::env::current_dir;
 use std::fs::read_to_string;
 use std::iter;
-use sysinfo::RefreshKind;
 
 const MARKER_START: &str = "<!---BENCH_START--->";
 const MARKER_END: &str = "<!---BENCH_END--->";
@@ -84,12 +84,7 @@ pub fn update_readme(results: &BenchmarkMap) {
 
     let star_road = get_star_road(results.len(), get_days_iter().count() * 2);
 
-    let s = sysinfo::System::new_with_specifics(RefreshKind::everything());
-
-    let cpu = s.cpus().first().unwrap();
-
-    let processor_name = cpu.brand().trim().to_string();
-    let sys_info = format!("Benchmark CPU: **{processor_name}**");
+    let sys_info = format!("Benchmark CPU: **{}**", get_cpu_name());
     let bench = format!("{sys_info}\n\n{star_road}\n\n{table_entries}");
 
     let updated_content = format!("{start}{MARKER_START}\n\n{bench}\n\n{MARKER_END}{footer}");
