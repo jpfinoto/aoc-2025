@@ -126,7 +126,7 @@ pub trait Solver<const D: usize, const P: usize> {
 }
 
 pub trait PuzzleSource {
-    fn get_input(&self, day: Day) -> Result<PuzzleInput, Box<dyn std::error::Error>>;
+    fn get_input(&self, day: Day) -> anyhow::Result<PuzzleInput>;
 }
 
 pub struct FixedDataSource {
@@ -134,7 +134,7 @@ pub struct FixedDataSource {
 }
 
 impl PuzzleSource for FixedDataSource {
-    fn get_input(&self, _day: Day) -> Result<PuzzleInput, Box<dyn std::error::Error>> {
+    fn get_input(&self, _day: Day) -> anyhow::Result<PuzzleInput> {
         Ok(PuzzleInput::from(&self.lines))
     }
 }

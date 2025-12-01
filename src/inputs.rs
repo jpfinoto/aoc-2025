@@ -51,12 +51,13 @@ impl CachedOnlinePuzzleSource {
     pub fn new() -> Result<Self, OnlinePuzzleSourceCreateError> {
         let path = std::env::current_dir()?.join("token.txt");
 
-        let api_token = std::fs::read_to_string(path.clone()).map_err(|e| {
-            OnlinePuzzleSourceCreateError::FailedToLoadToken {
+        let api_token = std::fs::read_to_string(path.clone())
+            .map_err(|e| OnlinePuzzleSourceCreateError::FailedToLoadToken {
                 path,
                 message: e.to_string(),
-            }
-        })?;
+            })?
+            .trim()
+            .to_string();
 
         Self::new_with_default_directory(Config {
             year: CURRENT_YEAR,
@@ -101,7 +102,7 @@ impl CachedOnlinePuzzleSource {
 }
 
 impl PuzzleSource for CachedOnlinePuzzleSource {
-    fn get_input(&self, day: Day) -> Result<PuzzleInput, Box<dyn std::error::Error>> {
+    fn get_input(&self, day: Day) -> anyhow::Result<PuzzleInput> {
         let path = self.get_day_path(day);
 
         if let Ok(contents) = std::fs::read_to_string(path.clone()) {
