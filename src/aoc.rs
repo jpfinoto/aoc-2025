@@ -7,53 +7,6 @@ pub type SolverMap = HashMap<(Day, Part), Box<dyn Fn(&PuzzleInput) -> Option<Str
 
 pub const CURRENT_YEAR: u32 = 2025;
 
-#[macro_export]
-macro_rules! solution {
-    ($day:expr) => {
-        use std::fmt::{Debug, Display};
-        use $crate::aoc::{Lines, PuzzleInput};
-
-        impl Solver<$day, 1> for PuzzleInput {
-            fn solve(&self) -> Option<impl Display + Debug> {
-                None as Option<String>
-            }
-        }
-        impl Solver<$day, 2> for PuzzleInput {
-            fn solve(&self) -> Option<impl Display + Debug> {
-                None as Option<String>
-            }
-        }
-    };
-    ($day:expr, $part_1_solver:ident) => {
-        use std::fmt::{Debug, Display};
-
-        impl Solver<$day, 1> for PuzzleInput {
-            fn solve(&self) -> Option<impl Display + Debug> {
-                Some($part_1_solver(self))
-            }
-        }
-        impl Solver<$day, 2> for PuzzleInput {
-            fn solve(&self) -> Option<impl Display + Debug> {
-                None as Option<String>
-            }
-        }
-    };
-    ($day:expr, $part_1_solver:ident, $part_2_solver:ident) => {
-        use std::fmt::{Debug, Display};
-
-        impl Solver<$day, 1> for PuzzleInput {
-            fn solve(&self) -> Option<impl Display + Debug> {
-                Some($part_1_solver(self))
-            }
-        }
-        impl Solver<$day, 2> for PuzzleInput {
-            fn solve(&self) -> Option<impl Display + Debug> {
-                Some($part_2_solver(self))
-            }
-        }
-    };
-}
-
 #[allow(clippy::test_attr_in_doctest)]
 /// Declare a test to run a part
 ///
@@ -74,8 +27,8 @@ macro_rules! solution {
 #[macro_export]
 macro_rules! aoc_test {
     ($day:expr, $part:literal, $expected:expr, $content:expr) => {
-        let input: PuzzleInput = $content.into();
-        let result = <PuzzleInput as Solver<$day, $part>>::solve(&input)
+        let puzzle_input: PuzzleInput = $content.into();
+        let result = <PuzzleInput as Solver<$day, $part>>::solve(&puzzle_input, (&puzzle_input).into())
             .expect("no result")
             .to_string();
         assert_eq!(result, $expected.to_string());
@@ -86,22 +39,13 @@ pub struct PuzzleInput {
     input: String,
 }
 
-pub trait Lines {
-    fn get_raw(&self) -> &str;
-    fn get_lines(&self) -> impl Iterator<Item = &str> {
+impl PuzzleInput {
+    pub fn get_raw(&self) -> &str {
+        &self.input
+    }
+
+    pub fn get_lines(&self) -> impl Iterator<Item = &str> {
         self.get_raw().lines().map(|s| s.trim())
-    }
-}
-
-impl Lines for PuzzleInput {
-    fn get_raw(&self) -> &str {
-        self.input.as_str()
-    }
-}
-
-impl Lines for &PuzzleInput {
-    fn get_raw(&self) -> &str {
-        self.input.as_str()
     }
 }
 
@@ -122,7 +66,8 @@ impl From<&Vec<String>> for PuzzleInput {
 }
 
 pub trait Solver<const D: usize, const P: usize> {
-    fn solve(&self) -> Option<impl Display + Debug>;
+    type Input: for<'a> From<&'a PuzzleInput>;
+    fn solve(&self, input: Self::Input) -> Option<impl Display + Debug>;
 }
 
 pub trait PuzzleSource {
@@ -146,12 +91,33 @@ pub fn get_days_iter() -> impl Iterator<Item = Day> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use derive_solution::{parser, solution};
 
-    fn sum_lines(input: impl Lines) -> u64 {
-        input.get_lines().map(|l| l.parse::<u64>().unwrap()).sum()
+    pub struct Input(Vec<u64>);
+
+    #[solution(day = 100, part = 1)]
+    fn sum_lines(Input(input): Input) -> u64 {
+        input.into_iter().sum()
     }
 
-    solution!(100, sum_lines);
+    #[parser]
+    fn parse(input: &PuzzleInput) -> Input {
+        Input(
+            input
+                .get_lines()
+                .map(|l| l.parse::<u64>().unwrap())
+                .collect(),
+        )
+    }
+
+    impl From<PuzzleInput> for Vec<u64> {
+        fn from(input: PuzzleInput) -> Self {
+            input
+                .get_lines()
+                .map(|l| l.parse::<u64>().unwrap())
+                .collect()
+        }
+    }
 
     #[test]
     fn test_implemented_solver() {

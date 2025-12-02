@@ -1,9 +1,13 @@
+[workspace]
+members = ["crates/derive_solution"]
+
 [package]
 name = "aoc-2025"
 version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+derive_solution = { path = "crates/derive_solution" }
 clap = { version = "4.5.51", features = ["cargo", "derive"] }
 peak_alloc = { version = "0.3.0" }
 thiserror = "2.0.17"

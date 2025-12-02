@@ -1,15 +1,14 @@
 use crate::aoc::*;
-use crate::solution;
+use derive_solution::{parser, solution};
 use itertools::Itertools;
 use std::ops::RangeInclusive;
 
-const DAY: Day = 2;
+pub struct Input {
+    ranges: Vec<RangeInclusive<i64>>,
+}
 
-solution!(DAY, solve_part_1, solve_part_2);
-
-fn solve_part_1(input: impl Lines) -> i64 {
-    let ranges = parse_ranges(&input);
-
+#[solution(day = 2, part = 1)]
+fn solve_part_1(input: Input) -> i64 {
     fn find_invalid_numbers_in_range(range: RangeInclusive<i64>) -> impl Iterator<Item = i64> {
         range.filter(|n| is_invalid(*n))
     }
@@ -28,12 +27,15 @@ fn solve_part_1(input: impl Lines) -> i64 {
         }
     }
 
-    ranges.flat_map(find_invalid_numbers_in_range).sum()
+    input
+        .ranges
+        .into_iter()
+        .flat_map(find_invalid_numbers_in_range)
+        .sum()
 }
 
-fn solve_part_2(input: impl Lines) -> i64 {
-    let ranges = parse_ranges(&input);
-
+#[solution(day = 2, part = 2)]
+fn solve_part_2(input: Input) -> i64 {
     fn find_invalid_numbers_in_range(range: RangeInclusive<i64>) -> impl Iterator<Item = i64> {
         range.filter(|n| is_invalid(*n))
     }
@@ -54,19 +56,31 @@ fn solve_part_2(input: impl Lines) -> i64 {
             })
     }
 
-    ranges.flat_map(find_invalid_numbers_in_range).sum()
+    input
+        .ranges
+        .into_iter()
+        .flat_map(find_invalid_numbers_in_range)
+        .sum()
 }
 
-fn parse_ranges(input: &impl Lines) -> impl Iterator<Item = RangeInclusive<i64>> {
-    input.get_raw().trim().split(',').map(|range| {
-        let (min, max) = range
-            .split('-')
-            .map(|x| x.parse::<i64>().unwrap())
-            .next_tuple()
-            .unwrap();
+#[parser]
+fn parse_ranges(input: &PuzzleInput) -> Input {
+    Input {
+        ranges: input
+            .get_raw()
+            .trim()
+            .split(',')
+            .map(|range| {
+                let (min, max) = range
+                    .split('-')
+                    .map(|x| x.parse::<i64>().unwrap())
+                    .next_tuple()
+                    .unwrap();
 
-        min..=max
-    })
+                min..=max
+            })
+            .collect(),
+    }
 }
 
 #[cfg(test)]
@@ -82,11 +96,11 @@ mod tests {
 
     #[test]
     fn test_part_1() {
-        aoc_test!(DAY, 1, 1227775554, TEST_INPUT);
+        aoc_test!(2, 1, 1227775554, TEST_INPUT);
     }
 
     #[test]
     fn test_part_2() {
-        aoc_test!(DAY, 2, 4174379265i64, TEST_INPUT);
+        aoc_test!(2, 2, 4174379265i64, TEST_INPUT);
     }
 }

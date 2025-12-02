@@ -55,13 +55,13 @@ fn generate_solver_map(days: Vec<usize>) -> String {
             #(map.insert(
                 (#days, 1),
                 Box::new(
-                    |input| <PuzzleInput as Solver<#days, 1>>::solve(input).map(|solution| solution.to_string())
+                    |input| <PuzzleInput as Solver<#days, 1>>::solve(input, input.into()).map(|solution| solution.to_string())
                 )
             );)*
             #(map.insert(
                 (#days, 2),
                 Box::new(
-                    |input| <PuzzleInput as Solver<#days, 2>>::solve(input).map(|solution| solution.to_string())
+                    |input| <PuzzleInput as Solver<#days, 2>>::solve(input, input.into()).map(|solution| solution.to_string())
                 )
             );)*
             map

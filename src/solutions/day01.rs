@@ -1,14 +1,30 @@
 use crate::aoc::*;
-use crate::solution;
+use derive_solution::{parser, solution};
 
-const DAY: Day = 1;
+pub struct Input {
+    rotations: Vec<i64>,
+}
 
-solution!(DAY, solve_part_1, solve_part_2);
+#[parser]
+fn parse_input(input: &PuzzleInput) -> Input {
+    Input {
+        rotations: input
+            .get_lines()
+            .filter(|line| !line.is_empty())
+            .map(|line| match line.chars().next().unwrap() {
+                'L' => -line[1..].parse::<i64>().unwrap(),
+                'R' => line[1..].parse().unwrap(),
+                c => panic!("{c} is not a direction"),
+            })
+            .collect(),
+    }
+}
 
-fn solve_part_1(input: impl Lines) -> i64 {
-    let numbers = get_numbers(&input);
-
-    numbers
+#[solution(day = 1, part = 1)]
+fn solve_part_1(input: Input) -> i64 {
+    input
+        .rotations
+        .into_iter()
         .fold((50, 0), |(current, zero_count), x| {
             let new_value = (current + x) % 100;
             (
@@ -23,10 +39,11 @@ fn solve_part_1(input: impl Lines) -> i64 {
         .1
 }
 
-fn solve_part_2(input: impl Lines) -> i64 {
-    let numbers = get_numbers(&input);
-
-    numbers
+#[solution(day = 1, part = 2)]
+fn solve_part_2(input: Input) -> i64 {
+    input
+        .rotations
+        .into_iter()
         .fold((50, 0), |(current, zero_count), x| {
             let new_value = current + x;
 
@@ -43,17 +60,6 @@ fn solve_part_2(input: impl Lines) -> i64 {
             (new_value % 100, zero_count + zero_crossings)
         })
         .1
-}
-
-fn get_numbers(input: &impl Lines) -> impl Iterator<Item = i64> {
-    input
-        .get_lines()
-        .filter(|line| !line.is_empty())
-        .map(|line| match line.chars().next().unwrap() {
-            'L' => -line[1..].parse::<i64>().unwrap(),
-            'R' => line[1..].parse().unwrap(),
-            c => panic!("{c} is not a direction"),
-        })
 }
 
 #[cfg(test)]
@@ -74,11 +80,11 @@ L82";
 
     #[test]
     fn test_part_1() {
-        aoc_test!(DAY, 1, 3, TEST_INPUT);
+        aoc_test!(1, 1, 3, TEST_INPUT);
     }
 
     #[test]
     fn test_part_2() {
-        aoc_test!(DAY, 2, 6, TEST_INPUT);
+        aoc_test!(1, 2, 6, TEST_INPUT);
     }
 }
