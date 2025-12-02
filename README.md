@@ -60,17 +60,22 @@ The benchmark can run automatically via GitHub Actions on every push to main. To
 
 ```rust
 use crate::aoc::*;
-use crate::solution;
+use derive_solution::{parser, solution};
 
-const DAY: Day = 1;
+pub struct Input;
 
-solution!(DAY, solve_part_1, solve_part_2);
+#[parser]
+fn parse_input(input: &PuzzleInput) -> Input {
+    Input {}
+}
 
-fn solve_part_1(input: impl Lines) -> i64 {
+#[solution(day = 1, part = 1)]
+fn solve_part_1(input: Input) -> i64 {
     0
 }
 
-fn solve_part_2(input: impl Lines) -> i64 {
+#[solution(day = 1, part = 2)]
+fn solve_part_2(input: Input) -> i64 {
     0
 }
 
@@ -83,12 +88,12 @@ mod tests {
 
     #[test]
     fn test_part_1() {
-        aoc_test!(DAY, 1, 0, TEST_INPUT);
+        aoc_test!(1, 1, 3, TEST_INPUT);
     }
 
     #[test]
     fn test_part_2() {
-        aoc_test!(DAY, 2, 0, TEST_INPUT);
+        aoc_test!(1, 2, 6, TEST_INPUT);
     }
 }
 ```
