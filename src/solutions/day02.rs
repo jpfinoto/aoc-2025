@@ -15,10 +15,17 @@ fn solve_part_1(input: impl Lines) -> i64 {
     }
 
     fn is_invalid(n: i64) -> bool {
-        let magnitude = n.ilog10() + 1;
-        let high_half = n / 10i64.pow(magnitude / 2);
-        let low_half = n % 10i64.pow(magnitude / 2);
-        high_half == low_half
+        let number_of_digits = n.ilog10() + 1;
+        // only a number with an even number of digits can be split into two equal halves
+        if number_of_digits.is_multiple_of(2) {
+            // divide into a high and low half using powers of 10; it's faster than using strings
+            let divisor = 10i64.pow(number_of_digits / 2);
+            let high_half = n / divisor;
+            let low_half = n % divisor;
+            high_half == low_half
+        } else {
+            false
+        }
     }
 
     ranges.flat_map(find_invalid_numbers_in_range).sum()
@@ -32,13 +39,13 @@ fn solve_part_2(input: impl Lines) -> i64 {
     }
 
     fn is_invalid(n: i64) -> bool {
-        let digits = format!("{n}");
+        let digits = n.to_string();
         let len = digits.len();
 
         // iterates through every possible pattern length, then checks that every nth possible
         // repetition candidate (slot) matches the pattern
         (1..=len / 2)
-            .filter(|pattern_len| len % pattern_len == 0)
+            .filter(|pattern_len| len.is_multiple_of(*pattern_len))
             .map(|pattern_len| &digits[0..pattern_len])
             .any(|pattern| {
                 (1..(len / pattern.len())).all(|slot| {
