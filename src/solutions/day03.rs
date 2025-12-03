@@ -3,7 +3,7 @@ use derive_solution::{parser, solution};
 use itertools::Itertools;
 
 pub struct Input {
-    banks: Vec<Vec<i64>>,
+    banks: Vec<Vec<u8>>,
 }
 
 #[parser]
@@ -14,7 +14,7 @@ fn parse_input(input: &PuzzleInput) -> Input {
             .filter(|l| !l.is_empty())
             .map(|l| {
                 l.chars()
-                    .map(|x| x.to_digit(10).expect("invalid digit") as i64)
+                    .map(|x| x.to_digit(10).expect("invalid digit") as u8)
                     .collect()
             })
             .collect(),
@@ -47,7 +47,7 @@ fn solve_part_2(input: Input) -> i64 {
 /// then add one number at a time to this buffer. After adding a number, we
 /// delete any number that has a larger number immediately following it, as long
 /// as we have enough numbers in the buffer to form a solution.
-fn max_number_of_size(bank: &[i64], size: usize) -> i64 {
+fn max_number_of_size(bank: &[u8], size: usize) -> i64 {
     let mut slots = bank[..size].to_vec();
 
     // it's faster to add a number and then remove than to initialise slots with the full list
@@ -63,14 +63,14 @@ fn max_number_of_size(bank: &[i64], size: usize) -> i64 {
     // convert the number to base 10
     slots[0..size]
         .iter()
-        .rev()
-        .enumerate()
-        .map(|(i, n)| n * 10i64.pow(i as u32))
-        .sum()
+        .cloned()
+        .map(i64::from)
+        .reduce(|x, x1| x * 10 + x1)
+        .unwrap()
 }
 
 /// removes the leftmost slot immediately followed by a higher number
-fn try_remove_lowest(slots: &mut Vec<i64>) -> bool {
+fn try_remove_lowest(slots: &mut Vec<u8>) -> bool {
     for (i, (n, next_n)) in slots.iter().tuple_windows().enumerate() {
         if next_n > n {
             slots.remove(i);
