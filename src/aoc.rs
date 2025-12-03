@@ -28,9 +28,10 @@ pub const CURRENT_YEAR: u32 = 2025;
 macro_rules! aoc_test {
     ($day:expr, $part:literal, $expected:expr, $content:expr) => {
         let puzzle_input: PuzzleInput = $content.into();
-        let result = <PuzzleInput as Solver<$day, $part>>::solve(&puzzle_input, (&puzzle_input).into())
-            .expect("no result")
-            .to_string();
+        let result =
+            <PuzzleInput as Solver<$day, $part>>::solve(&puzzle_input, (&puzzle_input).into())
+                .expect("no result")
+                .to_string();
         assert_eq!(result, $expected.to_string());
     };
 }
