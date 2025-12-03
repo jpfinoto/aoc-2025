@@ -41,34 +41,44 @@ fn solve_part_2(input: Input) -> i64 {
         .sum()
 }
 
+/// Returns the maximum joltage for n batteries in that bank.
+///
+/// The idea behind this method is to create a buffer of the final size,
+/// then add one number at a time to this buffer. After adding a number, we
+/// delete any number that has a larger number immediately following it, as long
+/// as we have enough numbers in the buffer to form a solution.
 fn max_number_of_size(bank: &[i64], size: usize) -> i64 {
-    let mut slots = vec![];
-    let mut index = 0;
+    let mut slots = bank[..size].to_vec();
 
-    for i in 0..size {
-        let limit = bank.len() - size + i;
-
-        // println!("search from {i} to {limit}: {:?}", &bank[index..=limit]);
-
-        let (new_index, largest) = bank[index..=limit]
-            .iter()
-            .enumerate()
-            .sorted_by_key(|&(i, n)| (-n, i))
-            .next()
-            .unwrap();
-
-        // println!("largest: {largest} at index {new_index}");
-
-        slots.push(*largest);
-        index += new_index + 1;
+    // it's faster to add a number and then remove than to initialise slots with the full list
+    for &n in &bank[size..] {
+        slots.push(n);
+        loop {
+            if slots.len() == size || !try_remove_lowest(&mut slots) {
+                break;
+            }
+        }
     }
 
-    slots
+    // convert the number to base 10
+    slots[0..size]
         .iter()
         .rev()
         .enumerate()
         .map(|(i, n)| n * 10i64.pow(i as u32))
         .sum()
+}
+
+/// removes the leftmost slot immediately followed by a higher number
+fn try_remove_lowest(slots: &mut Vec<i64>) -> bool {
+    for (i, (n, next_n)) in slots.iter().tuple_windows().enumerate() {
+        if next_n > n {
+            slots.remove(i);
+            return true;
+        }
+    }
+
+    false
 }
 
 #[cfg(test)]
