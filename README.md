@@ -35,7 +35,7 @@ puzzle inputs. You can get this from the session token while logged in on the we
 # Solving
 
 - Create a solution with the format `day{n:02}.rs` in the `src/solutions` folder
-- Use the `solution!()` macro to declare solutions. See the template at the end of the readme.
+- Use the `#[parser]` and `#[solution(day = DAY, part = PART)]` macros to define the input parser and the solution function
 - Use `cargo run` to solve the latest solved day
 - Alternatively, use `cargo run solve <day>` to solve a specific day.
 
@@ -100,16 +100,26 @@ mod tests {
 
 # Inner Workings
 
-The `solution!` macro expands to something like this:
+The `#[parser]` macro generates a `From<&PuzzleInput>` implementation for the input type:
 
 ```rust
-impl Solver<DAY, 1> for PuzzleInput {
-    fn solve(&self) -> Option<impl Display + Debug> {
-        Some(solve_part_1(self))
+impl From<&PuzzleInput> for Input {
+    fn from(input: &PuzzleInput) -> Self {
+        parse_input(input).into()
+    }
+}
+```
+
+The `#[solution]` macro expands to something like this:
+
+```rust
+impl Solver<DAY, PART> for PuzzleInput {
+    type Input = Input;
+    fn solve(&self, input: Self::Input) -> Option<impl Display + Debug> {
+        Some(solve_part_1(input))
     }
 }
 ```
 
 Then, the build script detects all the solved days and wraps them all into a map of solver functions.
 
-Yes, it's pretty weird, but I'm too far into this rabbit hole to change how it works now ;)
