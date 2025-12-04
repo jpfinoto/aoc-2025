@@ -12,10 +12,10 @@ Benchmark CPU: **4x Neoverse-N2**
 
 | Day                          | Part 1           | Part 2           |
 |------------------------------|------------------|------------------|
-| [01](src/solutions/day01.rs) | 102.9µs / 96 KiB | 101.4µs / 96 KiB |
+| [01](src/solutions/day01.rs) | 102.4µs / 96 KiB | 101.2µs / 96 KiB |
 | [02](src/solutions/day02.rs) | 6.0ms / 2 KiB    | 84.5ms / 2 KiB   |
-| [03](src/solutions/day03.rs) | 283.8µs / 26 KiB | 229.4µs / 26 KiB |
-| [04](src/solutions/day04.rs) | 276.5µs / 59 KiB | 7.5ms / 82 KiB   |
+| [03](src/solutions/day03.rs) | 282.6µs / 26 KiB | 227.6µs / 26 KiB |
+| [04](src/solutions/day04.rs) | 273.2µs / 59 KiB | 6.5ms / 82 KiB   |
 | 05                           | -                | -                |
 | 06                           | -                | -                |
 | 07                           | -                | -                |
