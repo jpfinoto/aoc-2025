@@ -1,3 +1,5 @@
+pub mod grid;
+
 use itertools::Itertools;
 
 pub fn get_cpu_name() -> String {

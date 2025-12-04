@@ -4,7 +4,7 @@ mod benchmark_cache;
 pub mod inputs;
 mod readme;
 pub mod solutions;
-mod utils;
+pub mod utils;
 
 use crate::aoc::{Day, Part, PuzzleSource, SolverMap, get_days_iter};
 use crate::bench::{BenchmarkResults, benchmark};
