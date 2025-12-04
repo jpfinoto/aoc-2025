@@ -51,7 +51,7 @@ impl<T: Clone> DenseGrid<T> {
         }
     }
 
-    pub fn at(&self, (x, y): (i64, i64)) -> Option<&T> {
+    pub fn at(&self, XY { x, y }: XY) -> Option<&T> {
         if x < 0 || x >= self.width || y < 0 || y >= self.height {
             None
         } else {
@@ -59,7 +59,7 @@ impl<T: Clone> DenseGrid<T> {
         }
     }
 
-    pub fn try_set_at(&mut self, (x, y): (i64, i64), val: T) -> Option<()> {
+    pub fn try_set_at(&mut self, XY { x, y }: XY, val: T) -> Option<()> {
         if x < 0 || x >= self.width || y < 0 || y >= self.height {
             None
         } else {
@@ -68,7 +68,7 @@ impl<T: Clone> DenseGrid<T> {
         }
     }
 
-    pub fn set_at(&mut self, pos: (i64, i64), val: T) {
+    pub fn set_at(&mut self, pos: XY, val: T) {
         self.try_set_at(pos, val).unwrap()
     }
 

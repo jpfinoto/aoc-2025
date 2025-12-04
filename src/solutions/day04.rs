@@ -44,7 +44,7 @@ fn solve_part_2(mut input: DenseGrid<CellState>) -> usize {
 
         total_removed += removable_rolls.len();
         removable_rolls.into_iter().for_each(|pos| {
-            input.set_at((pos.x, pos.y), CellState::Empty);
+            input.set_at(pos, CellState::Empty);
         });
     }
 
@@ -57,7 +57,7 @@ fn get_removable_paper_rolls(grid: &DenseGrid<CellState>) -> impl Iterator<Item 
             if matches!(state, CellState::PaperRoll) {
                 let paper_roll_neighbours = pos
                     .all_neighbours()
-                    .filter(|pos2| matches!(grid.at((pos2.x, pos2.y)), Some(CellState::PaperRoll)))
+                    .filter(|pos2| matches!(grid.at(*pos2), Some(CellState::PaperRoll)))
                     .count();
 
                 paper_roll_neighbours < 4
