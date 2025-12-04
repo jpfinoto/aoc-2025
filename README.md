@@ -8,14 +8,14 @@ An overcomplicated setup for getting inputs and benchmarking the solutions!
 
 Benchmark CPU: **4x Neoverse-N2**
 
-`|######------------------| 6/24 stars`
+`|########----------------| 8/24 stars`
 
 | Day                          | Part 1           | Part 2           |
 |------------------------------|------------------|------------------|
-| [01](src/solutions/day01.rs) | 101.8µs / 96 KiB | 101.9µs / 96 KiB |
-| [02](src/solutions/day02.rs) | 6.0ms / 2 KiB    | 84.8ms / 2 KiB   |
-| [03](src/solutions/day03.rs) | 283.1µs / 26 KiB | 222.9µs / 26 KiB |
-| 04                           | -                | -                |
+| [01](src/solutions/day01.rs) | 102.9µs / 96 KiB | 101.4µs / 96 KiB |
+| [02](src/solutions/day02.rs) | 6.0ms / 2 KiB    | 84.5ms / 2 KiB   |
+| [03](src/solutions/day03.rs) | 283.8µs / 26 KiB | 229.4µs / 26 KiB |
+| [04](src/solutions/day04.rs) | 276.5µs / 59 KiB | 7.5ms / 82 KiB   |
 | 05                           | -                | -                |
 | 06                           | -                | -                |
 | 07                           | -                | -                |
