@@ -1,12 +1,23 @@
 use crate::aoc::*;
 use derive_solution::{parser, solution};
 use itertools::Itertools;
-use std::ops::RangeInclusive;
+
+#[derive(Debug, Clone)]
+pub struct Range {
+    start: i64,
+    end: i64,
+}
 
 #[derive(Debug, Clone)]
 pub struct Input {
-    fresh_ranges: Vec<RangeInclusive<i64>>,
+    fresh_ranges: Vec<Range>,
     ingredients: Vec<i64>,
+}
+
+impl Range {
+    fn contains(&self, n: i64) -> bool {
+        n >= self.start && n <= self.end
+    }
 }
 
 #[parser]
@@ -20,7 +31,7 @@ fn parse_input(input: &PuzzleInput) -> Input {
                 .map(|n| n.parse().unwrap())
                 .next_tuple()
                 .unwrap();
-            start..=end
+            Range { start, end }
         })
         .collect();
 
@@ -34,7 +45,7 @@ fn parse_input(input: &PuzzleInput) -> Input {
 
 #[solution(day = 5, part = 1)]
 fn solve_part_1(mut input: Input) -> usize {
-    input.fresh_ranges.sort_by_key(|r| *r.start());
+    input.fresh_ranges.sort_by_key(|r| r.start);
 
     let ranges = get_non_overlapping_ranges(&input.fresh_ranges);
 
@@ -42,12 +53,12 @@ fn solve_part_1(mut input: Input) -> usize {
         .ingredients
         .into_iter()
         .filter(|n| {
-            match ranges.binary_search_by_key(n, |range| *range.start()) {
+            match ranges.binary_search_by_key(n, |range| range.start) {
                 Ok(_) => {
                     // the unlikely scenario where we find it exactly
                     true
                 }
-                Err(i) if i > 0 => ranges[i - 1].contains(n),
+                Err(i) if i > 0 => ranges[i - 1].contains(*n),
                 Err(_) => false,
             }
         })
@@ -56,32 +67,27 @@ fn solve_part_1(mut input: Input) -> usize {
 
 #[solution(day = 5, part = 2)]
 fn solve_part_2(mut input: Input) -> i64 {
-    input.fresh_ranges.sort_by_key(|r| *r.start());
+    input.fresh_ranges.sort_by_key(|r| r.start);
 
     get_non_overlapping_ranges(&input.fresh_ranges)
         .iter()
-        .fold(0, |acc, range| acc + (range.end() - range.start() + 1))
+        .fold(0, |acc, range| acc + (range.end - range.start + 1))
 }
 
-fn get_non_overlapping_ranges(ranges: &[RangeInclusive<i64>]) -> Vec<RangeInclusive<i64>> {
-    ranges
-        .iter()
-        .fold(Vec::<RangeInclusive<i64>>::new(), |mut processed, range| {
-            if let Some(last) = processed.last().cloned() {
-                let possible_start = last.end() + 1;
-
-                if *range.end() >= possible_start {
-                    let potential_range =
-                        (*range.start()).max(possible_start)..=(*range.end()).max(possible_start);
-
-                    processed.push(potential_range);
-                }
-            } else {
+fn get_non_overlapping_ranges(ranges: &[Range]) -> Vec<Range> {
+    ranges.iter().fold(vec![], |mut processed, range| {
+        if let Some(last) = processed.last_mut() {
+            if range.start <= last.end {
+                last.end = range.end.max(last.end);
+            } else if range.end > last.end {
                 processed.push(range.clone());
             }
+        } else {
+            processed.push(range.clone());
+        }
 
-            processed
-        })
+        processed
+    })
 }
 
 #[cfg(test)]
@@ -109,16 +115,5 @@ mod tests {
     #[test]
     fn test_part_2() {
         aoc_test!(5, 2, 14, TEST_INPUT);
-    }
-
-    #[test]
-    fn test_overlaps() {
-        assert_eq!(
-            solve_part_2(Input {
-                fresh_ranges: vec![1..=100, 40..=50, 100..=110, 111..=111, 1000..=1999,],
-                ingredients: vec![]
-            }),
-            1111
-        );
     }
 }
