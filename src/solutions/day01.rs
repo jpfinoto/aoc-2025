@@ -27,14 +27,11 @@ fn solve_part_1(input: Input) -> i64 {
         .into_iter()
         .fold((50, 0), |(current, zero_count), x| {
             let new_value = (current + x) % 100;
-            (
-                new_value,
-                if new_value == 0 {
-                    zero_count + 1
-                } else {
-                    zero_count
-                },
-            )
+            if new_value == 0 {
+                (new_value, zero_count + 1)
+            } else {
+                (new_value, zero_count)
+            }
         })
         .1
 }
