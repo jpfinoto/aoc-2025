@@ -148,6 +148,34 @@ impl XY {
     pub fn taxicab_length(&self) -> i64 {
         self.x.abs() + self.y.abs()
     }
+
+    pub fn south(&self) -> XY {
+        XY {
+            x: self.x,
+            y: self.y + 1,
+        }
+    }
+
+    pub fn east(&self) -> XY {
+        XY {
+            x: self.x + 1,
+            y: self.y,
+        }
+    }
+
+    pub fn north(&self) -> XY {
+        XY {
+            x: self.x,
+            y: self.y - 1,
+        }
+    }
+
+    pub fn west(&self) -> XY {
+        XY {
+            x: self.x - 1,
+            y: self.y,
+        }
+    }
 }
 
 impl Add for XY {

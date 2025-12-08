@@ -25,7 +25,7 @@ type BenchmarkMap = HashMap<(Day, Part), BenchmarkResults>;
 
 fn main() -> Result<(), String> {
     pretty_env_logger::formatted_builder()
-        .filter_level(log::LevelFilter::Debug)
+        .filter_level(log::LevelFilter::Info)
         .init();
 
     let puzzle_source = CachedOnlinePuzzleSource::new().expect("failed to configure puzzle source");

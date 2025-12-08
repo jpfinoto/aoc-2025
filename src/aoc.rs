@@ -46,7 +46,7 @@ impl PuzzleInput {
     }
 
     pub fn get_lines(&self) -> impl Iterator<Item = &str> {
-        self.get_raw().lines().map(|s| s.trim())
+        self.get_raw().lines().map(str::trim)
     }
 }
 
