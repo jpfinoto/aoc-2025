@@ -49,8 +49,6 @@ fn solve_part_1(mut grid: DenseGrid<Cell>) -> usize {
     let mut total_splits = 0;
 
     while let Some(mut pos) = pending_beams.pop() {
-        println!("Process beam starting at {pos:?}");
-
         while let Some(cell) = grid.at(pos) {
             match cell {
                 Cell::Empty => {
