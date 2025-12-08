@@ -8,22 +8,22 @@ An overcomplicated setup for getting inputs and benchmarking the solutions!
 
 Benchmark CPU: **4x Neoverse-N2**
 
-`|##########--------------| 10/24 stars`
+`|################--------| 16/24 stars`
 
-| Day                          | Part 1           | Part 2           |
-|------------------------------|------------------|------------------|
-| [01](src/solutions/day01.rs) | 104.2µs / 96 KiB | 100.7µs / 96 KiB |
-| [02](src/solutions/day02.rs) | 6.0ms / 2 KiB    | 85.2ms / 2 KiB   |
-| [03](src/solutions/day03.rs) | 282.0µs / 26 KiB | 228.1µs / 26 KiB |
-| [04](src/solutions/day04.rs) | 268.6µs / 59 KiB | 6.6ms / 82 KiB   |
-| [05](src/solutions/day05.rs) | 56.1µs / 16 KiB  | 47.1µs / 16 KiB  |
-| 06                           | -                | -                |
-| 07                           | -                | -                |
-| 08                           | -                | -                |
-| 09                           | -                | -                |
-| 10                           | -                | -                |
-| 11                           | -                | -                |
-| 12                           | -                | -                |
+| Day                          | Part 1            | Part 2            |
+|------------------------------|-------------------|-------------------|
+| [01](src/solutions/day01.rs) | 102.1µs / 96 KiB  | 101.1µs / 96 KiB  |
+| [02](src/solutions/day02.rs) | 6.0ms / 2 KiB     | 86.1ms / 2 KiB    |
+| [03](src/solutions/day03.rs) | 280.3µs / 26 KiB  | 221.8µs / 26 KiB  |
+| [04](src/solutions/day04.rs) | 279.4µs / 59 KiB  | 6.6ms / 82 KiB    |
+| [05](src/solutions/day05.rs) | 54.3µs / 16 KiB   | 45.4µs / 16 KiB   |
+| [06](src/solutions/day06.rs) | 131.9µs / 142 KiB | 230.6µs / 125 KiB |
+| [07](src/solutions/day07.rs) | 3.8ms / 60 KiB    | 213.1µs / 110 KiB |
+| [08](src/solutions/day08.rs) | 38.2ms / 15 MiB   | 61.9ms / 15 MiB   |
+| 09                           | -                 | -                 |
+| 10                           | -                 | -                 |
+| 11                           | -                 | -                 |
+| 12                           | -                 | -                 |
 
 <!---BENCH_END--->
 
