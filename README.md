@@ -8,19 +8,19 @@ An overcomplicated setup for getting inputs and benchmarking the solutions!
 
 Benchmark CPU: **4x Neoverse-N2**
 
-`|################--------| 16/24 stars`
+`|##################------| 18/24 stars`
 
 | Day                          | Part 1            | Part 2            |
 |------------------------------|-------------------|-------------------|
-| [01](src/solutions/day01.rs) | 103.4µs / 96 KiB  | 101.0µs / 96 KiB  |
-| [02](src/solutions/day02.rs) | 6.0ms / 2 KiB     | 85.6ms / 2 KiB    |
-| [03](src/solutions/day03.rs) | 283.1µs / 26 KiB  | 226.6µs / 26 KiB  |
-| [04](src/solutions/day04.rs) | 278.7µs / 59 KiB  | 6.6ms / 82 KiB    |
-| [05](src/solutions/day05.rs) | 54.4µs / 16 KiB   | 45.7µs / 16 KiB   |
-| [06](src/solutions/day06.rs) | 130.5µs / 142 KiB | 229.9µs / 125 KiB |
-| [07](src/solutions/day07.rs) | 77.7µs / 60 KiB   | 214.3µs / 110 KiB |
-| [08](src/solutions/day08.rs) | 37.7ms / 15 MiB   | 61.4ms / 15 MiB   |
-| 09                           | -                 | -                 |
+| [01](src/solutions/day01.rs) | 101.0µs / 96 KiB  | 99.9µs / 96 KiB   |
+| [02](src/solutions/day02.rs) | 6.0ms / 2 KiB     | 86.8ms / 2 KiB    |
+| [03](src/solutions/day03.rs) | 281.6µs / 26 KiB  | 225.5µs / 26 KiB  |
+| [04](src/solutions/day04.rs) | 274.6µs / 59 KiB  | 6.5ms / 82 KiB    |
+| [05](src/solutions/day05.rs) | 56.0µs / 16 KiB   | 47.3µs / 16 KiB   |
+| [06](src/solutions/day06.rs) | 133.2µs / 142 KiB | 231.7µs / 125 KiB |
+| [07](src/solutions/day07.rs) | 78.2µs / 60 KiB   | 212.2µs / 110 KiB |
+| [08](src/solutions/day08.rs) | 37.8ms / 15 MiB   | 61.5ms / 15 MiB   |
+| [09](src/solutions/day09.rs) | 200.6µs / 12 KiB  | 38.7µs / 12 KiB   |
 | 10                           | -                 | -                 |
 | 11                           | -                 | -                 |
 | 12                           | -                 | -                 |
