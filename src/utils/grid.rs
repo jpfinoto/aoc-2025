@@ -214,6 +214,19 @@ impl From<(i64, i64)> for XY {
     }
 }
 
+impl TryFrom<&str> for XY {
+    type Error = ();
+    fn try_from(s: &str) -> Result<Self, Self::Error> {
+        let [x, y] = s
+            .split(',')
+            .flat_map(|s| s.parse::<i64>())
+            .collect_vec()
+            .try_into()
+            .map_err(|_| ())?;
+        Ok(XY { x, y })
+    }
+}
+
 impl<T: std::fmt::Display + Copy + Clone> std::fmt::Display for DenseGrid<T> {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         self.rows().for_each(|row| {
