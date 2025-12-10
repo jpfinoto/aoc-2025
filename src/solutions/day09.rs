@@ -25,7 +25,7 @@ fn solve_part_1(Input(points): Input) -> i64 {
         .unwrap()
 }
 
-#[solution(day = 9, part = 2)]
+#[solution(day = 9, part = 2, unsolved)]
 fn solve_part_2(_input: Input) -> i64 {
     0
 }
