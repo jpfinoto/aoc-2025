@@ -36,6 +36,9 @@ pub fn parser(_args: TokenStream, input: TokenStream) -> TokenStream {
 struct SolutionArgs {
     day: usize,
     part: usize,
+
+    #[darling(default)]
+    unsolved: bool,
 }
 
 #[proc_macro_attribute]
@@ -72,13 +75,28 @@ pub fn solution(args: TokenStream, input: TokenStream) -> TokenStream {
     let day = args.day;
     let part = args.part;
 
-    quote! {
-        impl Solver<#day, #part> for PuzzleInput {
-            type Input = #arg_type;
-            fn solve(&self, input: Self::Input) -> Option<impl std::fmt::Display + std::fmt::Debug> {
-                Some(#name(input))
+    let solution_impl = if args.unsolved {
+        quote! {
+            impl Solver<#day, #part> for PuzzleInput {
+                type Input = #arg_type;
+                fn solve(&self, input: Self::Input) -> Option<&'static str> {
+                    None
+                }
             }
         }
+    } else {
+        quote! {
+            impl Solver<#day, #part> for PuzzleInput {
+                type Input = #arg_type;
+                fn solve(&self, input: Self::Input) -> Option<impl std::fmt::Display + std::fmt::Debug> {
+                    Some(#name(input))
+                }
+            }
+        }
+    };
+
+    quote! {
+        #solution_impl
 
         #input
     }
