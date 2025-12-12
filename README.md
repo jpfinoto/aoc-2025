@@ -12,18 +12,18 @@ Benchmark CPU: **4x Neoverse-N2**
 
 | Day                          | Part 1            | Part 2            |
 |------------------------------|-------------------|-------------------|
-| [01](src/solutions/day01.rs) | 110.5µs / 96 KiB  | 110.0µs / 96 KiB  |
-| [02](src/solutions/day02.rs) | 6.0ms / 2 KiB     | 89.1ms / 2 KiB    |
-| [03](src/solutions/day03.rs) | 286.4µs / 26 KiB  | 226.7µs / 26 KiB  |
-| [04](src/solutions/day04.rs) | 279.1µs / 59 KiB  | 6.6ms / 82 KiB    |
-| [05](src/solutions/day05.rs) | 56.2µs / 16 KiB   | 47.5µs / 16 KiB   |
-| [06](src/solutions/day06.rs) | 131.6µs / 142 KiB | 231.7µs / 125 KiB |
-| [07](src/solutions/day07.rs) | 78.6µs / 60 KiB   | 214.0µs / 110 KiB |
-| [08](src/solutions/day08.rs) | 36.7ms / 15 MiB   | 59.6ms / 15 MiB   |
-| [09](src/solutions/day09.rs) | 199.2µs / 12 KiB  | -                 |
-| [10](src/solutions/day10.rs) | 1.1ms / 90 KiB    | 12.5ms / 308 KiB  |
-| [11](src/solutions/day11.rs) | 153.5µs / 124 KiB | 370.1µs / 233 KiB |
-| [12](src/solutions/day12.rs) | 848.4µs / 95 KiB  | -                 |
+| [01](src/solutions/day01.rs) | 110.0µs / 96 KiB  | 109.4µs / 96 KiB  |
+| [02](src/solutions/day02.rs) | 6.0ms / 2 KiB     | 86.3ms / 2 KiB    |
+| [03](src/solutions/day03.rs) | 282.3µs / 26 KiB  | 225.4µs / 26 KiB  |
+| [04](src/solutions/day04.rs) | 279.6µs / 59 KiB  | 6.6ms / 82 KiB    |
+| [05](src/solutions/day05.rs) | 56.1µs / 16 KiB   | 47.9µs / 16 KiB   |
+| [06](src/solutions/day06.rs) | 131.7µs / 142 KiB | 229.4µs / 125 KiB |
+| [07](src/solutions/day07.rs) | 80.4µs / 60 KiB   | 215.7µs / 110 KiB |
+| [08](src/solutions/day08.rs) | 36.1ms / 15 MiB   | 59.7ms / 15 MiB   |
+| [09](src/solutions/day09.rs) | 202.0µs / 12 KiB  | -                 |
+| [10](src/solutions/day10.rs) | 1.0ms / 90 KiB    | 11.4ms / 308 KiB  |
+| [11](src/solutions/day11.rs) | 154.7µs / 124 KiB | 370.4µs / 233 KiB |
+| [12](src/solutions/day12.rs) | 1.4ms / 95 KiB    | -                 |
 
 <!---BENCH_END--->
 
