@@ -9,5 +9,6 @@ mod day08;
 mod day09;
 mod day10;
 mod day11;
+mod day12;
 
 include!(concat!(env!("OUT_DIR"), "/solved_days.rs"));
