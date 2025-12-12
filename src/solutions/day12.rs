@@ -37,8 +37,8 @@ fn solve_part_1(
         scenarios,
     }: Input,
 ) -> usize {
-    println!("{presents:?}");
-    println!("{scenarios:?}");
+    // println!("{presents:?}");
+    // println!("{scenarios:?}");
 
     scenarios
         .iter()
