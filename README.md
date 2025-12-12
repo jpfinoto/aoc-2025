@@ -8,22 +8,22 @@ An overcomplicated setup for getting inputs and benchmarking the solutions!
 
 Benchmark CPU: **4x Neoverse-N2**
 
-`|####################----| 20/24 stars`
+`|######################--| 22/24 stars`
 
 | Day                          | Part 1            | Part 2            |
 |------------------------------|-------------------|-------------------|
-| [01](src/solutions/day01.rs) | 110.3µs / 96 KiB  | 111.7µs / 96 KiB  |
-| [02](src/solutions/day02.rs) | 5.9ms / 2 KiB     | 85.5ms / 2 KiB    |
-| [03](src/solutions/day03.rs) | 284.4µs / 26 KiB  | 227.8µs / 26 KiB  |
-| [04](src/solutions/day04.rs) | 280.3µs / 59 KiB  | 6.5ms / 82 KiB    |
-| [05](src/solutions/day05.rs) | 56.4µs / 16 KiB   | 47.3µs / 16 KiB   |
-| [06](src/solutions/day06.rs) | 144.1µs / 142 KiB | 234.3µs / 125 KiB |
-| [07](src/solutions/day07.rs) | 77.2µs / 60 KiB   | 213.4µs / 110 KiB |
-| [08](src/solutions/day08.rs) | 36.4ms / 15 MiB   | 60.0ms / 15 MiB   |
-| [09](src/solutions/day09.rs) | 200.9µs / 12 KiB  | -                 |
-| [10](src/solutions/day10.rs) | 1.0ms / 90 KiB    | -                 |
-| [11](src/solutions/day11.rs) | 153.4µs / 124 KiB | 369.6µs / 233 KiB |
-| 12                           | -                 | -                 |
+| [01](src/solutions/day01.rs) | 110.5µs / 96 KiB  | 110.0µs / 96 KiB  |
+| [02](src/solutions/day02.rs) | 6.0ms / 2 KiB     | 89.1ms / 2 KiB    |
+| [03](src/solutions/day03.rs) | 286.4µs / 26 KiB  | 226.7µs / 26 KiB  |
+| [04](src/solutions/day04.rs) | 279.1µs / 59 KiB  | 6.6ms / 82 KiB    |
+| [05](src/solutions/day05.rs) | 56.2µs / 16 KiB   | 47.5µs / 16 KiB   |
+| [06](src/solutions/day06.rs) | 131.6µs / 142 KiB | 231.7µs / 125 KiB |
+| [07](src/solutions/day07.rs) | 78.6µs / 60 KiB   | 214.0µs / 110 KiB |
+| [08](src/solutions/day08.rs) | 36.7ms / 15 MiB   | 59.6ms / 15 MiB   |
+| [09](src/solutions/day09.rs) | 199.2µs / 12 KiB  | -                 |
+| [10](src/solutions/day10.rs) | 1.1ms / 90 KiB    | 12.5ms / 308 KiB  |
+| [11](src/solutions/day11.rs) | 153.5µs / 124 KiB | 370.1µs / 233 KiB |
+| [12](src/solutions/day12.rs) | 848.4µs / 95 KiB  | -                 |
 
 <!---BENCH_END--->
 
