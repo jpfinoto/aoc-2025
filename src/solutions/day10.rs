@@ -1,11 +1,9 @@
 use crate::aoc::*;
 use derive_solution::{parser, solution};
+use good_lp::{constraint, default_solver, variables, Expression, Solution, SolverModel};
 use itertools::Itertools;
 use lazy_static::lazy_static;
-use rayon::prelude::*;
 use regex::Regex;
-use std::iter;
-use std::ops::RangeInclusive;
 
 pub struct Input(Vec<Machine>);
 
@@ -21,15 +19,9 @@ fn solve_part_1(Input(machines): Input) -> u32 {
     machines.iter().map(min_presses_for_lights).sum()
 }
 
-#[solution(day = 10, part = 2, unsolved)]
+#[solution(day = 10, part = 2)]
 fn solve_part_2(Input(machines): Input) -> usize {
-    machines
-        .iter()
-        .flat_map(|machine| {
-            let min_budget = *machine.joltage.iter().max().unwrap() as usize;
-            (min_budget..).find_map(|budget| try_solve_joltage(machine, budget).map(|_| budget))
-        })
-        .sum()
+    machines.iter().map(try_solve_machine).sum()
 }
 
 #[parser]
@@ -60,170 +52,42 @@ fn get_light_state(buttons: &[u32], state: u32) -> u32 {
     })
 }
 
-fn try_solve_joltage(machine: &Machine, budget: usize) -> Option<Vec<usize>> {
-    println!("Trying budget {budget}");
+fn try_solve_machine(machine: &Machine) -> usize {
+    let mut vars = variables!();
+    let mut total_presses: Expression = 0.into();
 
-    CombinationIterator::new(
-        machine.button_indices.len(),
-        budget,
-        Some(|partial: &[usize]| -> bool {
-            is_partial_combination_possible(machine, partial, budget)
-        }),
-    )
-    // .par_bridge()
-    .find(|combination| {
-        let values = calc_joltage(machine, combination);
+    let mut joltages: Vec<Expression> = machine.joltage.iter().map(|_| 0.into()).collect();
 
-        values == machine.joltage
-    })
-}
+    for indices in &machine.button_indices {
+        let button_presses = vars.add(good_lp::variable::variable().bounds(0..).integer());
+        total_presses += button_presses;
 
-fn calc_joltage(machine: &Machine, combination: &[usize]) -> Vec<u32> {
-    let mut values = vec![0; machine.joltage.len()];
-
-    for (times, button_indices) in combination.iter().zip(machine.button_indices.iter()) {
-        for &joltage_index in button_indices {
-            values[joltage_index as usize] += *times as u32;
+        for &index in indices {
+            joltages[index as usize] += button_presses;
         }
     }
-    values
-}
 
-fn is_partial_combination_possible(
-    machine: &Machine,
-    combination: &[usize],
-    total_budget: usize,
-) -> bool {
-    let values = calc_joltage(machine, combination);
-    let used_budget = combination.iter().sum::<usize>();
-
-    let leftover = values
-        .iter()
-        .zip_eq(machine.joltage.iter())
-        .map(|(value, expected_value)| (*expected_value as i32) - (*value as i32))
+    let constraints = joltages
+        .into_iter()
+        .zip(machine.joltage.iter())
+        .map(|(j, &joltage)| constraint!(j == joltage))
         .collect_vec();
 
-    leftover.iter().all(|x| *x >= 0)
-        && (total_budget - used_budget) >= (*machine.joltage.iter().max().unwrap() as usize)
-}
+    println!("{:?}", constraints);
 
-#[derive(Debug, Clone)]
-struct CombinationIterator<F: Fn(&[usize]) -> bool> {
-    budget: usize,
-    items: Vec<Option<CombinationState>>,
-    partial_checker: Option<F>,
-}
+    let problem = vars
+        .minimise(total_presses.clone())
+        .using(default_solver)
+        .with_all(constraints);
 
-#[derive(Debug, Clone)]
-struct CombinationState {
-    budget: usize,
-    range: RangeInclusive<usize>,
-    last_value: Option<usize>,
-}
+    let solution = problem.solve().expect("all problems should be solvable");
 
-impl<F: Fn(&[usize]) -> bool> Iterator for CombinationIterator<F> {
-    type Item = Vec<usize>;
-
-    fn next(&mut self) -> Option<Self::Item> {
-        // go over the iterators and "refill" any that need refilling
-        let mut needs_refill = true;
-        while needs_refill {
-            needs_refill = false;
-            for i in 0..self.items.len() {
-                if matches!(&self.items[i], None) {
-                    if i == 0 {
-                        return None;
-                    }
-
-                    // try to refill and backtrack if the previous one exhausts
-                    if let Some(_) = self.items[i - 1].as_mut()?.next() {
-                        self.items[i] = Some(CombinationState::new(
-                            self.budget
-                                - &self.items[0..i]
-                                    .iter()
-                                    .flatten()
-                                    .map(|state| state.last_value.unwrap())
-                                    .sum(),
-                        ));
-                    } else {
-                        self.items[i - 1] = None;
-                        needs_refill = true;
-                        break;
-                    }
-                }
-
-                if i > 0 {
-                    let partial_result: Vec<usize> = self.items[0..=i]
-                        .iter()
-                        .flat_map(|el| el.as_ref().unwrap().last_value)
-                        .collect();
-
-                    if let Some(checker) = &self.partial_checker
-                        && !partial_result.is_empty()
-                        && !checker(&partial_result)
-                    {
-                        self.items[i..].iter_mut().for_each(|el| *el = None);
-                        needs_refill = true;
-                        break;
-                    }
-                }
-            }
-
-            if !needs_refill && matches!(self.items.last_mut()?.as_mut()?.next(), None) {
-                *self.items.last_mut()? = None;
-                needs_refill = true;
-            }
-        }
-
-        let total: usize = self
-            .items
-            .iter()
-            .flatten()
-            .flat_map(|state| state.last_value)
-            .sum();
-
-        Some(
-            self.items
-                .iter()
-                .flat_map(|el| el.as_ref().unwrap().last_value)
-                .chain(iter::once(self.budget - total))
-                .collect(),
-        )
-    }
-}
-
-impl<F: Fn(&[usize]) -> bool> CombinationIterator<F> {
-    fn new(n: usize, budget: usize, partial_checker: Option<F>) -> Self {
-        assert!(n >= 2);
-        CombinationIterator {
-            partial_checker,
-            budget,
-            items: iter::once(Some(CombinationState::new(budget)))
-                .chain(iter::repeat_n(None, n - 2))
-                .collect(),
-        }
-    }
-}
-
-impl CombinationState {
-    fn new(budget: usize) -> Self {
-        CombinationState {
-            budget,
-            range: 0..=budget,
-            last_value: None,
-        }
-    }
-
-    fn next(&mut self) -> Option<usize> {
-        let value = self.budget - self.range.next()?;
-        self.last_value = Some(value);
-        Some(value)
-    }
+    solution.eval(total_presses).round() as usize
 }
 
 lazy_static! {
     static ref LINE_REGEX: Regex =
-        Regex::new(r"^\[(?<lights>[.#]+)] \((?<buttons>[^{]*)\) \{(?<joltage>.*)}$").unwrap();
+        Regex::new(r"^\[(?<lights>[.#]*)] \((?<buttons>[^{]*)\) \{(?<joltage>.*)}$").unwrap();
 }
 
 fn parse_machine(line: &str) -> Option<Machine> {
@@ -305,14 +169,12 @@ mod tests {
     }
 
     #[test]
-    fn test_combination_iterator() {
-        let mut iter = CombinationIterator::new(3, 5, None::<fn(&[usize]) -> bool>);
-        assert_eq!(iter.next(), Some(vec![5, 0, 0]));
-        assert_eq!(iter.next(), Some(vec![4, 1, 0]));
-        assert_eq!(iter.next(), Some(vec![4, 0, 1]));
+    fn test_solver() {
+        let machine =
+            parse_machine("[.....] (0,1,2,3) (2,3) (0,1) (2) (0,2,3) (4) {99,99,99,99,1}").unwrap();
+        assert_eq!(try_solve_machine(&machine), 100);
 
-        for values in CombinationIterator::new(3, 5, None::<fn(&[usize]) -> bool>) {
-            println!("{values:?}");
-        }
+        let machine = parse_machine("[.#.#] (0,1,2) (1,3) {0,7,0,7}").unwrap();
+        assert_eq!(try_solve_machine(&machine), 7);
     }
 }

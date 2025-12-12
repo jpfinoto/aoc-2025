@@ -26,6 +26,7 @@ fn solve_part_1(Input(points): Input) -> i64 {
 }
 
 #[solution(day = 9, part = 2, unsolved)]
+#[allow(unused)]
 fn solve_part_2(_input: Input) -> i64 {
     0
 }
