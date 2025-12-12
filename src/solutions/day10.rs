@@ -73,8 +73,6 @@ fn try_solve_machine(machine: &Machine) -> usize {
         .map(|(j, &joltage)| constraint!(j == joltage))
         .collect_vec();
 
-    println!("{:?}", constraints);
-
     let problem = vars
         .minimise(total_presses.clone())
         .using(default_solver)
