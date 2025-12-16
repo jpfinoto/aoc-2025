@@ -176,6 +176,24 @@ impl XY {
             y: self.y,
         }
     }
+
+    pub fn normalise_cardinal(&self) -> Option<XY> {
+        if self.x == 0 && self.y == 0 {
+            None
+        } else if self.x == 0 {
+            Some(XY {
+                x: 0,
+                y: self.y.signum(),
+            })
+        } else if self.y == 0 {
+            Some(XY {
+                x: self.x.signum(),
+                y: 0,
+            })
+        } else {
+            None
+        }
+    }
 }
 
 impl Add for XY {
