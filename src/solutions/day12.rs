@@ -1,11 +1,10 @@
-#![allow(dead_code)]
-
 use crate::aoc::*;
 use crate::utils::grid::XY;
 use derive_solution::{parser, solution};
 use itertools::Itertools;
 
 #[derive(Clone, Debug)]
+#[allow(unused)]
 pub struct Input {
     presents: Vec<Present>,
     scenarios: Vec<Scenario>,
@@ -25,6 +24,7 @@ pub struct Pattern {
 }
 
 #[derive(Clone, Debug)]
+#[allow(unused)]
 pub struct Present {
     area: u32,
     variants: Vec<Pattern>,
@@ -51,7 +51,7 @@ fn solve_part_1(
         .count()
 }
 
-#[solution(day = 12, part = 2, unsolved)]
+#[solution(day = 12, part = 2)]
 fn solve_part_2(_input: Input) -> i64 {
     0
 }
@@ -68,36 +68,6 @@ impl Pattern {
             cells,
             filled_coords,
         }
-    }
-
-    fn mirrored_x(&self) -> Pattern {
-        let cells = &self.cells;
-
-        Pattern::new([
-            cells[2], cells[1], cells[0], //
-            cells[5], cells[4], cells[3], //
-            cells[8], cells[7], cells[6], //
-        ])
-    }
-
-    fn mirrored_y(&self) -> Pattern {
-        let cells = &self.cells;
-
-        Pattern::new([
-            cells[6], cells[7], cells[8], //
-            cells[3], cells[4], cells[5], //
-            cells[0], cells[1], cells[2], //
-        ])
-    }
-
-    fn rotate_90_cw(&self) -> Pattern {
-        let cells = &self.cells;
-
-        Pattern::new([
-            cells[6], cells[3], cells[0], //
-            cells[7], cells[4], cells[1], //
-            cells[8], cells[5], cells[2], //
-        ])
     }
 }
 
