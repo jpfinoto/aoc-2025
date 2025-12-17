@@ -1,6 +1,6 @@
 use crate::aoc::*;
 use derive_solution::{parser, solution};
-use good_lp::{constraint, default_solver, variables, Expression, Solution, SolverModel};
+use good_lp::{Expression, Solution, SolverModel, constraint, default_solver, variables};
 use itertools::Itertools;
 use lazy_static::lazy_static;
 use regex::Regex;

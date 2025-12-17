@@ -245,6 +245,12 @@ impl TryFrom<&str> for XY {
     }
 }
 
+impl std::fmt::Display for XY {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "({}, {})", self.x, self.y)
+    }
+}
+
 impl<T: std::fmt::Display + Copy + Clone> std::fmt::Display for DenseGrid<T> {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         self.rows().for_each(|row| {

@@ -1,7 +1,11 @@
 use crate::aoc::*;
+#[cfg(test)]
+use crate::utils::grid::DenseGrid;
 use crate::utils::grid::{DIR_DOWN, DIR_LEFT, DIR_RIGHT, DIR_UP, XY};
 use derive_solution::{parser, solution};
 use itertools::Itertools;
+use rayon::prelude::*;
+use std::iter;
 
 pub struct Input(Vec<XY>);
 
@@ -25,60 +29,112 @@ fn solve_part_1(Input(points): Input) -> i64 {
         .unwrap()
 }
 
-#[solution(day = 9, part = 2, unsolved)]
+#[solution(day = 9, part = 2)]
 #[allow(unused)]
 fn solve_part_2(Input(points): Input) -> i64 {
-    let edges: Vec<(XY, XY)> = points.iter().cloned().tuple_windows().collect();
+    let edges: Vec<(XY, XY)> = points
+        .iter()
+        .chain(iter::once(points.first().unwrap()))
+        .cloned()
+        .tuple_windows()
+        .collect();
 
-    points
+    #[cfg(test)]
+    {
+        let size = points.iter().map(|p| p.x.max(p.y)).max().unwrap() + 3;
+
+        let grid = DenseGrid::from_iter(
+            (size + 1) as usize,
+            (0..=size).cartesian_product(0..=size).map(|(x, y)| {
+                let point: XY = (y, x).into();
+
+                if points.contains(&point) {
+                    "#"
+                } else if is_inside(point, &edges) {
+                    "X"
+                } else {
+                    "."
+                }
+            }),
+        );
+
+        println!("{grid}");
+    }
+
+    let potential_sorted = points
         .iter()
         .tuple_combinations()
-        .filter_map(|(a, b)| {
-            if all_edge_points(*a, *b).all(|p| is_inside(p, &edges)) {
-                Some(area(*a, *b))
+        .sorted_by_key(|&(a, b)| -area(*a, *b))
+        .collect_vec();
+
+    let total = potential_sorted.len();
+
+    potential_sorted
+        .par_iter()
+        .cloned()
+        .enumerate()
+        .find_map_first(|(i, (a, b))| {
+            let area = area(*a, *b);
+
+            if points.iter().any(|p| is_point_inside_rectangle(*p, *a, *b)) {
+                None
+            } else if all_edge_points(*a, *b).all(|p| is_inside(p, &edges)) {
+                Some(area)
             } else {
                 None
             }
         })
-        .max()
-        .unwrap()
+        .expect("no solution found")
 }
 
 fn area(a: XY, b: XY) -> i64 {
     ((a.x - b.x).abs() + 1) * ((a.y - b.y).abs() + 1)
 }
 
+fn is_point_inside_rectangle(point: XY, a: XY, b: XY) -> bool {
+    ((a.x.min(b.x) + 1)..a.x.max(b.x)).contains(&point.x)
+        && ((a.y.min(b.y) + 1)..a.y.max(b.y)).contains(&point.y)
+}
+
 fn all_edge_points(a: XY, b: XY) -> impl Iterator<Item = XY> {
-    (a.x..=b.x)
+    let from_x = a.x.min(b.x);
+    let from_y = a.y.min(b.y);
+    let to_x = a.x.max(b.x);
+    let to_y = a.y.max(b.y);
+
+    (from_x..=to_x)
         .map(move |x| XY { x, y: a.y })
-        .chain((a.x..=b.x).map(move |x| XY { x, y: b.y }))
-        .chain((a.y..=b.y).map(move |y| XY { x: a.x, y }))
-        .chain((a.y..=b.y).map(move |y| XY { x: b.x, y }))
+        .chain((from_x..=to_x).map(move |x| XY { x, y: b.y }))
+        .chain((from_y..=to_y).map(move |y| XY { x: a.x, y }))
+        .chain((from_y..=to_y).map(move |y| XY { x: b.x, y }))
 }
 
 fn is_inside(point: XY, edges: &[(XY, XY)]) -> bool {
-    'outer: for dir in [DIR_RIGHT, DIR_LEFT, DIR_DOWN, DIR_UP] {
+    'outer: for dir in [DIR_LEFT, DIR_RIGHT, DIR_DOWN, DIR_UP] {
         let mut total = 0;
         for intersection in get_ray_intersection(point, dir, edges.iter().cloned()) {
             match intersection {
-                RayIntersectionResult::CrossingEdge { .. } => {
+                RayIntersectionResult::InsideEdge => return true,
+                RayIntersectionResult::CrossingEdge => {
                     total += 1;
                 }
-                RayIntersectionResult::HitCorner(_) => continue 'outer,
+                RayIntersectionResult::HitCorner => continue 'outer,
             }
         }
 
         return total % 2 == 1;
     }
 
-    false
+    panic!("no direction gave a good ray-cast for {point}")
 }
 
 enum RayIntersectionResult {
     /// Crossing perpendicular to an edge
-    CrossingEdge { hit: XY },
+    CrossingEdge,
     /// The ray hit a corner
-    HitCorner(XY),
+    HitCorner,
+    /// The starting point is inside an edge
+    InsideEdge,
 }
 
 fn get_ray_intersection(
@@ -87,14 +143,15 @@ fn get_ray_intersection(
     edges: impl Iterator<Item = (XY, XY)>,
 ) -> impl Iterator<Item = RayIntersectionResult> {
     edges.flat_map(move |(edge_start, edge_end)| {
-        if will_ray_hit(start, direction, edge_start) {
-            Some(RayIntersectionResult::HitCorner(edge_start))
-        } else if will_ray_hit(start, direction, edge_end) {
-            Some(RayIntersectionResult::HitCorner(edge_end))
-        } else if let Some(hit) = ray_crosses_segment(start, direction, edge_start, edge_end) {
-            Some(RayIntersectionResult::CrossingEdge { hit })
+        if is_inside_edge(start, edge_start, edge_end) {
+            Some(RayIntersectionResult::InsideEdge)
+        } else if will_ray_hit(start, direction, edge_start)
+            || will_ray_hit(start, direction, edge_end)
+        {
+            Some(RayIntersectionResult::HitCorner)
         } else {
-            None
+            ray_crosses_segment(start, direction, edge_start, edge_end)
+                .map(|_| RayIntersectionResult::CrossingEdge)
         }
     })
 }
@@ -141,11 +198,18 @@ fn ray_crosses_segment(start: XY, direction: XY, edge_start: XY, edge_end: XY) -
         _ => None,
     }?;
 
-    if (potential_hit - edge_start).length_sq() <= (edge_end - edge_start).length_sq() {
+    if is_inside_edge(potential_hit, edge_start, edge_end) {
         Some(potential_hit)
     } else {
         None
     }
+}
+
+fn is_inside_edge(point: XY, edge_start: XY, edge_end: XY) -> bool {
+    let x_range = edge_start.x.min(edge_end.x)..=edge_start.x.max(edge_end.x);
+    let y_range = edge_start.y.min(edge_end.y)..=edge_start.y.max(edge_end.y);
+
+    x_range.contains(&point.x) && y_range.contains(&point.y)
 }
 
 #[cfg(test)]
