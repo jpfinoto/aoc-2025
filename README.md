@@ -8,22 +8,22 @@ An overcomplicated setup for getting inputs and benchmarking the solutions!
 
 Benchmark CPU: **4x Neoverse-N2**
 
-`|#######################-| 23/24 stars`
+`|########################| 24/24 stars`
 
 | Day                          | Part 1            | Part 2            |
 |------------------------------|-------------------|-------------------|
-| [01](src/solutions/day01.rs) | 113.8µs / 96 KiB  | 114.1µs / 96 KiB  |
-| [02](src/solutions/day02.rs) | 6.0ms / 2 KiB     | 88.6ms / 2 KiB    |
-| [03](src/solutions/day03.rs) | 288.4µs / 26 KiB  | 229.1µs / 26 KiB  |
-| [04](src/solutions/day04.rs) | 272.5µs / 59 KiB  | 6.5ms / 82 KiB    |
-| [05](src/solutions/day05.rs) | 54.1µs / 16 KiB   | 45.9µs / 16 KiB   |
-| [06](src/solutions/day06.rs) | 134.0µs / 142 KiB | 230.9µs / 125 KiB |
-| [07](src/solutions/day07.rs) | 79.4µs / 60 KiB   | 214.7µs / 110 KiB |
-| [08](src/solutions/day08.rs) | 36.0ms / 15 MiB   | 62.1ms / 15 MiB   |
-| [09](src/solutions/day09.rs) | 202.6µs / 12 KiB  | 37.4s / 3 MiB     |
+| [01](src/solutions/day01.rs) | 115.1µs / 96 KiB  | 114.2µs / 96 KiB  |
+| [02](src/solutions/day02.rs) | 5.9ms / 2 KiB     | 86.6ms / 2 KiB    |
+| [03](src/solutions/day03.rs) | 287.8µs / 26 KiB  | 226.9µs / 26 KiB  |
+| [04](src/solutions/day04.rs) | 271.7µs / 59 KiB  | 6.5ms / 82 KiB    |
+| [05](src/solutions/day05.rs) | 55.7µs / 16 KiB   | 47.2µs / 16 KiB   |
+| [06](src/solutions/day06.rs) | 130.5µs / 142 KiB | 231.5µs / 125 KiB |
+| [07](src/solutions/day07.rs) | 79.4µs / 60 KiB   | 214.4µs / 110 KiB |
+| [08](src/solutions/day08.rs) | 37.7ms / 15 MiB   | 61.2ms / 15 MiB   |
+| [09](src/solutions/day09.rs) | 205.1µs / 12 KiB  | 38.0s / 3 MiB     |
 | [10](src/solutions/day10.rs) | 1.0ms / 90 KiB    | 11.4ms / 308 KiB  |
-| [11](src/solutions/day11.rs) | 154.1µs / 124 KiB | 367.5µs / 233 KiB |
-| [12](src/solutions/day12.rs) | 193.9µs / 95 KiB  | -                 |
+| [11](src/solutions/day11.rs) | 155.0µs / 124 KiB | 371.7µs / 233 KiB |
+| [12](src/solutions/day12.rs) | 191.6µs / 95 KiB  | 188.5µs / 95 KiB  |
 
 <!---BENCH_END--->
 
