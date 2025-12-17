@@ -8,22 +8,22 @@ An overcomplicated setup for getting inputs and benchmarking the solutions!
 
 Benchmark CPU: **4x Neoverse-N2**
 
-`|######################--| 22/24 stars`
+`|#######################-| 23/24 stars`
 
 | Day                          | Part 1            | Part 2            |
 |------------------------------|-------------------|-------------------|
-| [01](src/solutions/day01.rs) | 119.9µs / 96 KiB  | 117.3µs / 96 KiB  |
-| [02](src/solutions/day02.rs) | 6.0ms / 2 KiB     | 85.4ms / 2 KiB    |
-| [03](src/solutions/day03.rs) | 283.6µs / 26 KiB  | 227.5µs / 26 KiB  |
-| [04](src/solutions/day04.rs) | 271.0µs / 59 KiB  | 6.5ms / 82 KiB    |
-| [05](src/solutions/day05.rs) | 54.1µs / 16 KiB   | 45.7µs / 16 KiB   |
-| [06](src/solutions/day06.rs) | 129.8µs / 142 KiB | 229.9µs / 125 KiB |
-| [07](src/solutions/day07.rs) | 77.4µs / 60 KiB   | 212.6µs / 110 KiB |
-| [08](src/solutions/day08.rs) | 37.9ms / 15 MiB   | 61.8ms / 15 MiB   |
-| [09](src/solutions/day09.rs) | 201.5µs / 12 KiB  | -                 |
+| [01](src/solutions/day01.rs) | 113.8µs / 96 KiB  | 114.1µs / 96 KiB  |
+| [02](src/solutions/day02.rs) | 6.0ms / 2 KiB     | 88.6ms / 2 KiB    |
+| [03](src/solutions/day03.rs) | 288.4µs / 26 KiB  | 229.1µs / 26 KiB  |
+| [04](src/solutions/day04.rs) | 272.5µs / 59 KiB  | 6.5ms / 82 KiB    |
+| [05](src/solutions/day05.rs) | 54.1µs / 16 KiB   | 45.9µs / 16 KiB   |
+| [06](src/solutions/day06.rs) | 134.0µs / 142 KiB | 230.9µs / 125 KiB |
+| [07](src/solutions/day07.rs) | 79.4µs / 60 KiB   | 214.7µs / 110 KiB |
+| [08](src/solutions/day08.rs) | 36.0ms / 15 MiB   | 62.1ms / 15 MiB   |
+| [09](src/solutions/day09.rs) | 202.6µs / 12 KiB  | 37.4s / 3 MiB     |
 | [10](src/solutions/day10.rs) | 1.0ms / 90 KiB    | 11.4ms / 308 KiB  |
-| [11](src/solutions/day11.rs) | 155.6µs / 124 KiB | 371.0µs / 233 KiB |
-| [12](src/solutions/day12.rs) | 193.1µs / 95 KiB  | -                 |
+| [11](src/solutions/day11.rs) | 154.1µs / 124 KiB | 367.5µs / 233 KiB |
+| [12](src/solutions/day12.rs) | 193.9µs / 95 KiB  | -                 |
 
 <!---BENCH_END--->
 
